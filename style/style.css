@@ -2,9 +2,31 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+
 }
 html,
 body {
     height: 100%;
     width: 100%;
+    background-image: url(../assets/background.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.glavni{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+}
+
+.square{
+    border: 5px solid black;
+    width: 55vw;
+    height: 70vh;
+    margin: 0 auto;
+    align-items: center;
+    display: flex;
+    justify-content: center;
 }
