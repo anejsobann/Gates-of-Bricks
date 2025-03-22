@@ -12,14 +12,107 @@ var dx = 2;
 var dy = -2;
 var r = 10;
 
-// Naloži sliko krone
-var brickImage = new Image();
-brickImage.src = "../assets/crown.png"; // Pot do slike
+// Naloži slike
+var crownImage = new Image();
+crownImage.src = "../assets/crown.png"; // Pot do slike krone
 
-// Ko se slika naloži, nastavimo pravilne dimenzije
-brickImage.onload = function () {
-    drawBricks(); // Pokliči risanje "opek" šele po nalaganju slike
+var sandwatchImage = new Image();
+sandwatchImage.src = "../assets/sandwatch.png"; // Pot do slike peščene ure
+
+// Shrani objekte (krone in ure)
+var objects = [];
+
+// Počakamo, da se slike naložijo
+crownImage.onload = sandwatchImage.onload = function () {
+    setupObjects();
+    drawElements();
 };
+
+// Funkcija za risanje slike (krone ali peščene ure)
+function drawImage(image, x, y, width, height) {
+    ctx.drawImage(image, x - width / 2, y - height / 2, width, height);
+}
+
+// Funkcija za inicializacijo objektov
+function setupObjects() {
+    var crownScale = 0.2; // Velikost krone
+    var sandwatchScale = 0.17; // Velikost peščene ure (malo manjša)
+
+    var padding = 15; // Razmik med slikami
+
+    // Velikost kron
+    var crownWidth = crownImage.width * crownScale;
+    var crownHeight = crownImage.height * crownScale;
+
+    // Velikost peščenih ur
+    var sandwatchWidth = sandwatchImage.width * sandwatchScale;
+    var sandwatchHeight = sandwatchImage.height * sandwatchScale;
+
+    // **Postavitev mreže 4x4**
+    var cols = 4;
+    var rows = 4;
+    var totalWidth = cols * crownWidth + (cols - 1) * padding;
+    var totalHeight = rows * crownHeight + (rows - 1) * padding;
+
+    // Centriranje začetne točke mreže
+    var startX = (canvas.width - totalWidth) / 2 + crownWidth / 2;
+    var startY = (canvas.height - totalHeight) / 2 + crownHeight / 2;
+
+    for (var i = 0; i < cols; i++) {
+        for (var j = 0; j < rows; j++) {
+            var x = startX + i * (crownWidth + padding);
+            var y = startY + j * (crownHeight + padding);
+
+            // Če je srednji del (2x2), nariši krone, drugače peščene ure
+            if (i >= 1 && i <= 2 && j >= 1 && j <= 2) {
+                objects.push({ x, y, width: crownWidth, height: crownHeight, image: crownImage });
+            } else {
+                objects.push({ x, y, width: sandwatchWidth, height: sandwatchHeight, image: sandwatchImage });
+            }
+        }
+    }
+}
+
+// Funkcija za risanje vseh objektov
+function drawElements() {
+    objects.forEach(obj => {
+        drawImage(obj.image, obj.x, obj.y, obj.width, obj.height);
+    });
+}
+
+// Funkcija za preverjanje trka z žogico
+function checkCollisions() {
+    for (var i = 0; i < objects.length; i++) {
+        var obj = objects[i];
+        if (
+            x + r > obj.x - obj.width / 2 &&
+            x - r < obj.x + obj.width / 2 &&
+            y + r > obj.y - obj.height / 2 &&
+            y - r < obj.y + obj.height / 2
+        ) {
+            objects.splice(i, 1); // Odstrani objekt iz tabele
+            dy = -dy; // Obrni smer žogice
+            break; // Prekini zanko (da ne izbriše več slik naenkrat)
+        }
+    }
+}
+
+// Posodobitev položaja žogice in risanje elementov
+function updateBallPosition() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawElements();
+    drawBall();
+
+    x += dx;
+    y += dy;
+
+    // Preveri trke z objekti
+    checkCollisions();
+
+    // Odboji od robov canvasa
+    if (x + dx > canvas.width - r || x + dx < r) dx = -dx;
+    if (y + dy > canvas.height - r || y + dy < r) dy = -dy;
+}
 
 // Funkcija za risanje žogice
 function drawBall() {
@@ -28,44 +121,6 @@ function drawBall() {
     ctx.fillStyle = "#0095DD";
     ctx.fill();
     ctx.closePath();
-}
-
-// Funkcija za risanje posamezne "opeke" kot slike krone
-function drawBrick(x, y) {
-    var scale = 0.2; // Delež originalne velikosti
-    var width = brickImage.width * scale;
-    var height = brickImage.height * scale;
-
-    ctx.drawImage(brickImage, x, y, width, height);
-}
-
-// Funkcija za risanje mreže "opek"
-function drawBricks() {
-    var rows = 3;
-    var cols = 5;
-    var padding = 15;
-
-    for (var i = 0; i < cols; i++) {
-        for (var j = 0; j < rows; j++) {
-            var x = i * (brickImage.width * 0.2 + padding);
-            var y = j * (brickImage.height * 0.2 + padding);
-            drawBrick(x, y);
-        }
-    }
-}
-
-// Posodobitev položaja žogice in risanje elementov
-function updateBallPosition() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawBricks();
-    drawBall();
-
-    x += dx;
-    y += dy;
-
-    // Odboji od robov
-    if (x + dx > canvas.width - r || x + dx < r) dx = -dx;
-    if (y + dy > canvas.height - r || y + dy < r) dy = -dy;
 }
 
 // Osveževanje animacije vsakih 10ms
