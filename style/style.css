@@ -21,12 +21,45 @@ body {
     align-items: center;
 }
 
+.levi{
+    border: 2px solid rgb(133, 38, 38);
+    width: 20%;
+    height: 100%;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+}
+
+.zeus{
+    width: 15vw;
+    height: 70vh;
+    z-index: 10;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    padding-bottom: 90px;
+}
+
+.srednji{
+    border: 2px solid rgb(23, 157, 59);
+    width: 60%;
+    height: 100%;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+}
+
+.desni{
+    border: 2px solid rgb(220, 23, 165);
+    width: 20%;
+    height: 100%;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+}
+
 .square{
     border: 5px solid black;
-    width: 55vw;
-    height: 70vh;
-    margin: 0 auto;
-    align-items: center;
-    display: flex;
-    justify-content: center;
+    width: 59vw;
+    height: 65vh;
 }
