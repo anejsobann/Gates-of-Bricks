@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breakout - The Bricks</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- Dodaj SweetAlert -->
+    <style>
+        canvas {
+            display: block;
+            margin: auto;
+            border: 2px solid black;
+            background: #eee;
+        }
+        .buttons {
+            text-align: center;
+            margin-top: 10px;
+        }
+        button {
+            font-size: 16px;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="400" height="400"></canvas>
+    <div class="buttons">
+        <button onclick="startGame()">Start</button>
+        <button onclick="resetGame()">Reset</button>
+    </div>
+
+    <script>
+        var canvas, ctx;
+        var x, y, dx, dy, r = 10; // Žogica
+        var paddlex, paddleh = 10, paddlew = 75; // Plošček
+        var rightDown = false, leftDown = false; // Tipke
+        var intervalId = null;
+        
+        // Opeke
+        var bricks;
+        var NROWS = 5, NCOLS = 5;
+        var BRICKWIDTH, BRICKHEIGHT = 15, PADDING = 2;
+        var bricksLeft;
+
+        function init() {
+            canvas = document.getElementById("canvas");
+            ctx = canvas.getContext("2d");
+            BRICKWIDTH = (canvas.width / NCOLS) - PADDING;
+            resetGame();
+            document.addEventListener("keydown", onKeyDown);
+            document.addEventListener("keyup", onKeyUp);
+        }
+
+        function resetGame() {
+            clearInterval(intervalId); // Ustavi trenutno igro
+            x = 200; 
+            y = 250;
+            dx = 2;
+            dy = -4;
+            paddlex = (canvas.width - paddlew) / 2;
+            initbricks();
+            clear();
+            drawBall();
+            drawPaddle();
+            drawBricks();
+        }
+
+        function startGame() {
+            clearInterval(intervalId); // Prepreči dvojno izvajanje intervala
+            intervalId = setInterval(draw, 10);
+        }
+
+        function clear() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function drawBall() {
+            ctx.beginPath();
+            ctx.arc(x, y, r, 0, Math.PI * 2, true);
+            ctx.fillStyle = "#0095DD";
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function drawPaddle() {
+            ctx.fillStyle = "#333";
+            ctx.fillRect(paddlex, canvas.height - paddleh, paddlew, paddleh);
+        }
+
+        function drawBricks() {
+            ctx.fillStyle = "#FF5733";
+            for (var i = 0; i < NROWS; i++) {
+                for (var j = 0; j < NCOLS; j++) {
+                    if (bricks[i][j] === 1) {
+                        var brickX = j * (BRICKWIDTH + PADDING);
+                        var brickY = i * (BRICKHEIGHT + PADDING);
+                        ctx.fillRect(brickX, brickY, BRICKWIDTH, BRICKHEIGHT);
+                    }
+                }
+            }
+        }
+
+        function onKeyDown(evt) {
+            if (evt.key === "ArrowRight") rightDown = true;
+            else if (evt.key === "ArrowLeft") leftDown = true;
+        }
+
+        function onKeyUp(evt) {
+            if (evt.key === "ArrowRight") rightDown = false;
+            else if (evt.key === "ArrowLeft") leftDown = false;
+        }
+
+        function initbricks() {
+            bricks = [];
+            bricksLeft = NROWS * NCOLS; // Števec opek
+            for (var i = 0; i < NROWS; i++) {
+                bricks[i] = [];
+                for (var j = 0; j < NCOLS; j++) {
+                    bricks[i][j] = 1; // 1 pomeni, da opeka obstaja
+                }
+            }
+        }
+
+        function checkBrickCollision() {
+            var rowheight = BRICKHEIGHT + PADDING;
+            var colwidth = BRICKWIDTH + PADDING;
+            var row = Math.floor(y / rowheight);
+            var col = Math.floor(x / colwidth);
+
+            if (row >= 0 && row < NROWS && col >= 0 && col < NCOLS && bricks[row][col] === 1) {
+                bricks[row][col] = 0; // Odstrani opeko
+                bricksLeft--; // Zmanjšaj števec opek
+                dy = -dy; // Obrni smer
+                
+                if (bricksLeft === 0) {
+                    gameWon(); // Če so vse opeke uničene, prikaži SweetAlert
+                }
+            }
+        }
+
+        function checkPaddleBounce() {
+            if (x > paddlex && x < paddlex + paddlew) {
+                dx = 8 * ((x - (paddlex + paddlew / 2)) / paddlew);
+                dy = -dy;
+            }
+        }
+
+        function gameWon() {
+            clearInterval(intervalId); // Ustavi igro
+            Swal.fire({
+                title: "Čestitke! 🎉",
+                text: "Uspešno si razbil vse opeke!",
+                icon: "success",
+                confirmButtonText: "Igraj znova"
+            }).then(() => {
+                resetGame();
+            });
+        }
+
+        function draw() {
+            clear();
+            drawBall();
+            drawPaddle();
+            drawBricks();
+
+            // Premik ploščka
+            if (rightDown && paddlex + paddlew < canvas.width) paddlex += 5;
+            if (leftDown && paddlex > 0) paddlex -= 5;
+
+            // Odbijanje od robov
+            if (x + dx > canvas.width - r || x + dx < r) dx = -dx;
+            if (y + dy < r) dy = -dy;
+            else if (y + dy > canvas.height - paddleh - r) { 
+                checkPaddleBounce();
+                if (y + dy > canvas.height - r) clearInterval(intervalId); // Konec igre
+            }
+
+            checkBrickCollision(); // Preveri, če zadane opeko
+
+            x += dx;
+            y += dy;
+        }
+
+        init(); // Inicializacija igre
+    </script>
+</body>
+</html>

@@ -2,10 +2,9 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-
 }
-html,
-body {
+
+html, body {
     height: 100%;
     width: 100%;
     background-image: url(../assets/background.png);
@@ -13,7 +12,7 @@ body {
     background-size: cover;
 }
 
-.glavni{
+.glavni {
     height: 100%;
     width: 100%;
     display: flex;
@@ -21,7 +20,7 @@ body {
     align-items: center;
 }
 
-.levi{
+.levi, .desni {
     border: 2px solid rgb(133, 38, 38);
     width: 20%;
     height: 100%;
@@ -30,17 +29,7 @@ body {
     align-items: center;
 }
 
-.zeus{
-    width: 15vw;
-    height: 70vh;
-    z-index: 10;
-    display: flex;
-    justify-content: center; 
-    align-items: center;
-    padding-bottom: 90px;
-}
-
-.srednji{
+.srednji {
     border: 2px solid rgb(23, 157, 59);
     width: 60%;
     height: 100%;
@@ -49,17 +38,9 @@ body {
     align-items: center;
 }
 
-.desni{
-    border: 2px solid rgb(220, 23, 165);
-    width: 20%;
-    height: 100%;
-    display: flex;
-    justify-content: center; 
-    align-items: center;
-}
-
-.square{
-    border: 5px solid black;
-    width: 59vw;
-    height: 65vh;
+canvas {
+    display: block;
+    border: 2px solid black;
+    background-color: rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(13px);
 }
