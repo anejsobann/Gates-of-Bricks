@@ -21,7 +21,7 @@ html, body {
 }
 
 .levi, .desni {
-    border: 2px solid rgb(133, 38, 38);
+    
     width: 20%;
     height: 100%;
     display: flex;
@@ -30,7 +30,6 @@ html, body {
 }
 
 .srednji {
-    border: 2px solid rgb(23, 157, 59);
     width: 60%;
     height: 100%;
     display: flex;
@@ -45,7 +44,68 @@ html, body {
 
 canvas {
     display: block;
-    border: 2px solid black;
+    
     background-color: rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(13px);
 }
+
+.gumbi{
+    display: flex;
+    flex-direction: row;
+}
+
+#startBtn{
+    margin-right: 20px;
+    width: 100px;
+    height: 50px;
+    cursor: pointer;
+    font-size: large;
+    color: #00ccff; 
+    text-transform: uppercase;
+    text-align: center;
+    position: relative;
+    background: linear-gradient(to top, #4a0072, #8a2be2, #4a0072);
+    border: 3px solid gold;
+    border-radius: 8px;
+
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.8), 
+                0 0 25px rgba(255, 215, 0, 0.5) inset;
+                
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#startBtn:hover{
+    box-shadow: 0 0 20px rgba(255, 215, 0, 1), 
+                0 0 30px rgba(255, 215, 0, 0.7) inset;
+    transform: scale(1.05);
+}
+
+#resetBtn{
+    width: 100px;
+    height: 50px;
+    cursor: pointer;
+    font-size: large;
+    font-family: olympus;
+    color: #00ccff; 
+    text-transform: uppercase;
+    text-align: center;
+    position: relative;
+    background: linear-gradient(to top, #4a0072, #8a2be2, #4a0072);
+
+    border: 3px solid gold;
+    border-radius: 8px;
+
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.8), 
+                0 0 25px rgba(255, 215, 0, 0.5) inset;
+                
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#resetBtn:hover{
+    box-shadow: 0 0 20px rgba(255, 215, 0, 1), 
+                0 0 30px rgba(255, 215, 0, 0.7) inset;
+    transform: scale(1.05);
+}
+

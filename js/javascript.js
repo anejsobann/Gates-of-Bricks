@@ -133,7 +133,7 @@ function updateBallPosition() {
     if (x + dx > canvas.width - r || x + dx < r) dx = -dx;
     if (y + dy < r) dy = -dy;
 
-    // Odbijanje od drsnika
+    // Odbijanje od drsnika (ploščka)
     if (
       y + dy > canvas.height - sliderHeight - r &&
       x > sliderX &&
@@ -141,12 +141,8 @@ function updateBallPosition() {
     ) {
       dy = -dy;
 
-      // Naključno določimo smer odbijanja
-      if (Math.random() < 0.5) {
-        dx = -Math.abs(dx); // Odbijanje v levo
-      } else {
-        dx = Math.abs(dx); // Odbijanje v desno
-      }
+      // Upoštevaj odboj kroglice glede na to, kje se odbija od ploščka
+      dx = 8 * ((x - (sliderX + sliderWidth / 2)) / sliderWidth);
     } else if (y + dy > canvas.height) {
       gameLost = true; // Zabeleži, da je igra izgubljena
       gameStarted = false; // Zaustavi igro
@@ -228,11 +224,6 @@ function resetGame() {
   gameLost = false; // Ponastavi status izgube igre
 }
 
-// Funkcija za prikaz "Sweet Alert" sporočila
-function showSweetAlert(message) {
-  alert(message); // Preprosta uporaba browser alert funkcije
-}
-
 // Event listenerji za premikanje drsnika
 document.addEventListener("keydown", keyDownHandler);
 document.addEventListener("keyup", keyUpHandler);
@@ -259,5 +250,4 @@ document.getElementById("resetBtn").addEventListener("click", function () {
   window.location.reload(); // Osveži stran ob kliku na gumb
 });
 
-// Osveževanje animacije vsakih 10ms
 setInterval(updateBallPosition, 10);
