@@ -13,10 +13,10 @@ var r = 10; // Polmer žogice
 
 // Naloži slike
 var crownImage = new Image();
-crownImage.src = "../assets/crown.png";
+crownImage.src = "/Gates-of-Olympus/assets/crown.png";
 
 var sandwatchImage = new Image();
-sandwatchImage.src = "../assets/sandwatch.png";
+sandwatchImage.src = "/Gates-of-Olympus/assets/sandwatch.png";
 
 // Shrani objekte (krone in ure)
 var objects = [];
