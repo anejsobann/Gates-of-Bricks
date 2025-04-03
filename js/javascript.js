@@ -13,10 +13,10 @@ var r = 10; // Polmer žogice
 
 // Naloži slike
 var crownImage = new Image();
-crownImage.src = "../assets/Gates-of-Olympus/assets/crown.png";
+crownImage.src = "assets/crown.png"; ///Gates-of-Olympus/assets/crown.png
 
 var sandwatchImage = new Image();
-sandwatchImage.src = "../assets/Gates-of-Olympus/assets/sandwatch.png";
+sandwatchImage.src = "assets/sandwatch.png"; ///Gates-of-Olympus/assets/sandwatch.png
 
 // Shrani objekte (krone in ure)
 var objects = [];
@@ -141,17 +141,9 @@ function updateBallPosition() {
     ) {
       dy = -dy;
 
-      // Upoštevaj odboj kroglice glede na to, kje se odbija od ploščka
-      dx = 8 * ((x - (sliderX + sliderWidth / 2)) / sliderWidth);
-    } else if (y + dy > canvas.height) {
-      gameLost = true; // Zabeleži, da je igra izgubljena
-      gameStarted = false; // Zaustavi igro
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Poskusite ponovno!",
-      }); // Prikaži alert
-      return;
+      // Upoštevaj odboj kroglice glede na to, kje se odbija od ploščka, ampak brez spreminjanja hitrosti
+      let impactFactor = (x - (sliderX + sliderWidth / 2)) / (sliderWidth / 2);
+      dx = (dx > 0 ? 1 : -1) * Math.abs(dx);
     }
 
     // Premik drsnika
@@ -214,8 +206,8 @@ function resetGame() {
   // Ponastavi vse spremenljivke na začetne vrednosti
   x = canvas.width / 2;
   y = canvas.height - 30; // Začetni položaj žogice bo na drsniku
-  dx = 0.5; // Zmanjšana vodoravna hitrost
-  dy = -1; // Zmanjšana navpična hitrost
+  dx = 0.8; // Zmanjšana vodoravna hitrost
+  dy = -1.8; // Zmanjšana navpična hitrost
 
   // Ponastavi objekt in drsnik
   objects = [];
