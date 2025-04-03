@@ -16,7 +16,10 @@ var crownImage = new Image();
 crownImage.src = "assets/crown.png"; ///Gates-of-Olympus/assets/crown.png
 
 var sandwatchImage = new Image();
-sandwatchImage.src = "assets/sandwatch.png"; ///Gates-of-Olympus/assets/sandwatch.png
+sandwatchImage.src = "assets/sandwatch.png"; ///Gates-of-Olympus/assets/crown.png
+
+var multiImage = new Image();
+multiImage.src = "assets/multi.png";
 
 // Shrani objekte (krone in ure)
 var objects = [];
@@ -169,13 +172,17 @@ function updateBallPosition() {
 
 // Funkcija za risanje žogice
 function drawBall() {
+  ctx.drawImage(multiImage, x - r, y - r, r * 8, r * 8);
+}
+/* 
+function drawBall() {
   ctx.beginPath();
   ctx.arc(x, y, r, 0, Math.PI * 2);
   ctx.fillStyle = "#0095DD";
   ctx.fill();
   ctx.closePath();
 }
-
+*/
 // Funkcija za risanje drsnika
 function drawSlider() {
   ctx.beginPath();
