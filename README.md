@@ -1,4 +1,4 @@
-<h1>Gates of Bricks</h1>
+<h1>Gates of Olympus</h1>
  <p>In this project, I created a browser-based arcade game inspired by classic brick-breaker games. The layout features a central canvas with interactive gameplay, themed graphics, and animated elements.</p>
 
 Specifically, I:
